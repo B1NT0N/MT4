@@ -10,7 +10,6 @@ account_id = os.getenv('ACCOUNT_ID')
 server_url = 'https://mt-client-api-v1.agiliumtrade.agiliumtrade.ai'
 
 ## Methods
-
 ###Returns account information for a specified MetaTrader account
 def get_account_info(api_token,account_id,):
     
@@ -27,5 +26,5 @@ def get_positions_info(api_token,account_id,):
     
     return positions_info
 
-get_positions_info(api_token,account_id)
+positions_info=get_account_info(api_token,account_id)
 print(json.dumps(positions_info.json(),indent=2))
