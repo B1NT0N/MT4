@@ -16,7 +16,7 @@ def get_account_info(api_token,account_id,):
     headers={'auth-token':api_token}
     account_info = requests.get(f"{server_url}/users/current/accounts/{account_id}/accountInformation?{api_token}",headers=headers)
     
-    return account_info
+    return account_info.json()
 
 ##Returns account information for a specified MetaTrader account
 def get_positions_info(api_token,account_id,):
@@ -24,7 +24,7 @@ def get_positions_info(api_token,account_id,):
     headers={'auth-token':api_token}
     positions_info = requests.get(f"{server_url}/users/current/accounts/{account_id}/positions?{api_token}",headers=headers)
     
-    return positions_info
+    return positions_info.json()
 
-positions_info=get_account_info(api_token,account_id)
-print(json.dumps(positions_info.json(),indent=2))
+# positions_info=get_account_info(api_token,account_id)
+# print(json.dumps(positions_info.json(),indent=2))
