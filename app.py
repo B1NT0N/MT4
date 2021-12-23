@@ -1,6 +1,7 @@
 import tkinter as tk
+from ttkthemes import ThemedTk
 
-class App(tk.Frame):
+class App():
 
     def __init__(self,master=None):
         
