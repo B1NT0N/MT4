@@ -10,10 +10,11 @@ from dotenv import load_dotenv
 from tkinter import messagebox
 load_dotenv()
 
-class App():
+class App(tk.Frame):
 
     def __init__(self,master=None):
-        
+        tk.Frame.__init__(self, master)
+        self.master = master
         self.account_info=None
         self.positions_info=None
         self.profit=0.0
@@ -60,11 +61,14 @@ class App():
                                     selectbackground='#007acc'
                                     )
         self.listbox.grid(row = 3, column = 0, columnspan = 3,padx=13,pady=10)
+        self.update_data()
+        
         
     def update_data(self):
         self.account_info = main.get_account_info(self.api_token,self.account_id)
         self.positions_info = main.get_positions_info(self.api_token,self.account_id)
-        
+        self.profit=0
+        self.listbox.delete(0,'end')
         try:
             self.label_balance.config(text=f"Balance --------------->{format(self.account_info['balance'],'.2f')}")
             
@@ -74,7 +78,7 @@ class App():
             
             if len(self.positions_info)!=0:
                 for position in self.positions_info:
-                    self.profit+=position['profit']
+                    self.profit+=position['unrealizedProfit']
             else:
                 self.profit=0.0
 
@@ -83,7 +87,7 @@ class App():
             if len(self.positions_info)!=0:
                 for position in self.positions_info:
                     self.listbox.insert('end', 
-                                        f"{position['symbol']} : {'SELL' if (position['type'] == 'POSITION_TYPE_SELL') else 'BUY'}                                                      {format(position['profit'],'.2f')}",
+                                        f"{position['symbol']} : {'SELL' if (position['type'] == 'POSITION_TYPE_SELL') else 'BUY'}                                                      {format(position['unrealizedProfit'],'.2f')}",
                                         )
                     self.listbox.itemconfig("end",
                                             bg=f"{'Green' if (position['profit']>0)else 'Red'}",
@@ -94,6 +98,8 @@ class App():
         except Exception as error:
                 tk.messagebox.showerror('error', f'{self.account_info["error"]}')
         
+        self.after(10000, self.update_data)
+    
                 
 
 root = tk.Tk()
@@ -105,5 +111,5 @@ root.title("MT4 View")
 root.configure(bg='#1e1e1e')
 
 app = App(root)
-root.after(6000,app.update_data)
+root.after(1000,app.update_data)
 root.mainloop()
