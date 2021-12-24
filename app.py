@@ -62,8 +62,7 @@ class App(tk.Frame):
                                     )
         self.listbox.grid(row = 3, column = 0, columnspan = 3,padx=13,pady=10)
         self.update_data()
-        
-        
+           
     def update_data(self):
         self.account_info = main.get_account_info(self.api_token,self.account_id)
         self.positions_info = main.get_positions_info(self.api_token,self.account_id)
@@ -99,8 +98,6 @@ class App(tk.Frame):
                 tk.messagebox.showerror('error', f'{self.account_info["error"]}')
         
         self.after(10000, self.update_data)
-    
-                
 
 root = tk.Tk()
 
